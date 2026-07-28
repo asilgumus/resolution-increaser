@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Fotoğraf çözünürlüğünü tarayıcında, cihazından çıkarmadan yükselt." />
+    <title>Resolution Increaser — çözünürlüğü tarayıcıda yükselt</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <div class="page">
+      <header class="masthead">
+        <h1 class="wordmark">Resolution&nbsp;Increaser</h1>
+        <p class="lede">Düşük çözünürlüklü bir fotoğrafı tarayıcında yükselt. Cihazından hiç çıkmaz, hiçbir yere yüklenmez.</p>
+        <hr class="rule" />
+      </header>
+
+      <main class="workspace" aria-busy="false" id="workspace">
+        <!-- IDLE: dropzone -->
+        <section class="dropzone" id="dropzone" aria-label="Fotoğraf yükle">
+          <div class="dropzone__inner" id="dropzone-inner">
+            <svg class="dropzone__mark" width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
+              <rect x="4" y="8" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="16" y="16" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <p class="dropzone__title">Fotoğrafı buraya bırak</p>
+            <p class="dropzone__hint">ya da seçmek için tıkla</p>
+            <p class="dropzone__meta">PNG veya JPG · tarayıcında işlenir</p>
+          </div>
+          <input type="file" id="file-input" accept="image/png,image/jpeg,image/webp" hidden />
+        </section>
+
+        <!-- IMAGE LOADED: preview + controls -->
+        <section class="controls" id="controls" hidden>
+          <div class="preview" id="preview">
+            <img id="preview-img" alt="Yüklenen fotoğraf" />
+            <div class="preview__meta" id="preview-meta"></div>
+          </div>
+
+          <div class="scale-picker" id="scale-picker" role="radiogroup" aria-label="Çözünürlük çarpanı">
+            <button type="button" class="scale-card" data-scale="2" role="radio" aria-checked="true" tabindex="0">
+              <span class="scale-card__n">2×</span>
+              <span class="scale-card__l">iki kat</span>
+            </button>
+            <button type="button" class="scale-card" data-scale="4" role="radio" aria-checked="false" tabindex="-1">
+              <span class="scale-card__n">4×</span>
+              <span class="scale-card__l">dört kat</span>
+            </button>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn btn--primary" id="upscale-btn">Çözünürlüğü yükselt</button>
+            <button type="button" class="btn btn--ghost" id="cancel-btn" hidden>İptal</button>
+            <button type="button" class="btn btn--ghost" id="replace-btn">Başka fotoğraf</button>
+          </div>
+
+          <div class="progress" id="progress" hidden>
+            <div class="progress__track"><div class="progress__fill" id="progress-fill"></div></div>
+            <p class="progress__status" id="progress-status">Hazırlanıyor…</p>
+          </div>
+        </section>
+
+        <!-- ERROR -->
+        <section class="errorbox" id="errorbox" hidden>
+          <p class="errorbox__title" id="error-title">Bir şeyler ters gitti.</p>
+          <p class="errorbox__msg" id="error-msg"></p>
+          <button type="button" class="btn btn--ghost" id="retry-btn">Tekrar dene</button>
+        </section>
+
+        <!-- RESULT -->
+        <section class="result" id="result" hidden>
+          <div class="compare" id="compare">
+            <div class="compare__layer compare__layer--after">
+              <img id="after-img" alt="Yükseltilmiş fotoğraf" />
+            </div>
+            <div class="compare__layer compare__layer--before">
+              <img id="before-img" alt="Orijinal fotoğraf" />
+            </div>
+            <button type="button" class="compare__handle" id="compare-handle" role="slider" tabindex="0" aria-label="Önce ve sonra karşılaştır" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+              <div class="compare__grip" aria-hidden="true"></div>
+            </button>
+            <span class="compare__label compare__label--before">önce</span>
+            <span class="compare__label compare__label--after">sonra</span>
+          </div>
+          <div class="result__meta" id="result-meta"></div>
+          <div class="actions result__actions">
+            <button type="button" class="btn btn--download" id="download-btn">PNG olarak indir</button>
+            <button type="button" class="btn btn--ghost" id="restart-btn">Yeni fotoğraf</button>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footnote">
+        <p>Tüm işlem senin tarayıcınızda olur. Fotoğrafın hiçbir sunucuya gönderilmez.</p>
+      </footer>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
